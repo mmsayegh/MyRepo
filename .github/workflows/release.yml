@@ -21,16 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 🔍 Debug Step: Check if semantic-release is installed
-      - name: Debug: List Installed Binaries
-        run: |
-          echo "Checking installed binaries..."
-          ls -la node_modules/.bin/
-          echo "Checking system PATH..."
-          echo $PATH
-          echo "Checking if semantic-release is globally available..."
-          which semantic-release
-
       - name: Fix File Permissions (if needed)
         run: chmod +x node_modules/.bin/semantic-release
 
