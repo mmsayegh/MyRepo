@@ -1,29 +1,40 @@
-name: Release Notes Automation
+name: Release
 
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main  # Change if your default branch is different
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Ensures full git history
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
         run: npm install
 
-      - name: Run Semantic Release
+      # 🔍 Debug Step: Check if semantic-release is installed
+      - name: Debug: List Installed Binaries
+        run: |
+          echo "Checking installed binaries..."
+          ls -la node_modules/.bin/
+          echo "Checking system PATH..."
+          echo $PATH
+          echo "Checking if semantic-release is globally available..."
+          which semantic-release
+
+      - name: Fix File Permissions (if needed)
+        run: chmod +x node_modules/.bin/semantic-release
+
+      - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.MAYS_TOKEN }}
-        run:  semantic-release
+        run: npx semantic-release
